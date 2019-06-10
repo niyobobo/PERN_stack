@@ -1,16 +1,10 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
-
-const ItemSchema = new Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-module.exports = Item = mongoose.model('item', ItemSchema);
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const item = sequelize.define('item', {
+    name: DataTypes.STRING
+  }, {});
+  item.associate = function(models) {
+    // associations can be defined here
+  };
+  return item;
+};

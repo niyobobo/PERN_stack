@@ -1,22 +1,23 @@
-const Item = require('../models/Item');
+const model = require('../models/index');
+
+const { item } = model;
 
 const ItemController = {
   getAllItems: (req, res) => {
-    Item.find()
-      .sort({ date: -1 })
-      .then(items => res.json(items));
+    item.findAll()
+      .then(items => res.json(items))
+      .catch(err=> err);
   },
 
   createItem: (req, res) => {
     const { name } = req.body;
-    const newItem = new Item({ name });
-    newItem.save().then(item => res.json(item)).catch(err => err);
+    item.create({ name }).then(item => res.json(item)).catch(err => err);
   },
 
   deleteItem: (req, res) => {
     const { id } = req.params;
-    Item.findById(id)
-      .then(item => item.remove().then(() => res.json({
+    item.findOne({ where: { id }})
+      .then(item => item.destroy().then(() => res.json({
         success: true
       })))
       .catch(() => res.status(400).json({
